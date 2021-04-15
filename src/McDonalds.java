@@ -7,6 +7,8 @@ public class McDonalds {
     private ArrayList<Drink> drinks = new ArrayList<>();
     int decision;
     int decisiond;
+    Burger b;
+    Drink d;
     Scanner scan = new Scanner(System.in);
 
     public void start(){
@@ -21,15 +23,20 @@ public class McDonalds {
            System.out.println((burgers.indexOf(b) + 1)+ "\t" + b.getName());
            System.out.println("\t" + "CHF " + b.getPrice() + "\n");
        }
-
-        System.out.println("Geben Sie die Zahl des Burgers an: ");
-        decision = scan.nextInt();
+        try {
+            System.out.println("Geben Sie die Zahl des Burgers an: ");
+            decision = scan.nextInt();
+            b = burgers.get((decision -1));
+        } catch (IndexOutOfBoundsException e){
+            System.out.println("Diese Nummer ist nicht vorhanden, bitte wählen Sie eine gütlige Nummer.");
+            decision = scan.nextInt();
+            b = burgers.get((decision -1));
+        }
 
         System.out.println("Mit Getränk? Y/N");
         String yesNo = scan.next();
 
-        if(yesNo.equals("Y")) {
-
+        if(yesNo.equalsIgnoreCase("Y")) {
             System.out.println("Unsere Drinks: ");
             Drink drink = new Drink("Cola", "small", 4.5);
             Drink drink1 = new Drink("Sprite", "large", 5.5);
@@ -43,20 +50,22 @@ public class McDonalds {
                 System.out.println("\t" + "CHF " + d.getPrice() + "\n");
             }
 
-            System.out.println("Geben Sie die Nummer des Getränks an: ");
-            decisiond = scan.nextInt();
+            try {
+                System.out.println("Geben Sie die Nummer des Getränks an: ");
+                decisiond = scan.nextInt();
+                d = drinks.get((decisiond - 1));
+            }catch (IndexOutOfBoundsException e){
+                System.out.println("Diese Nummer ist nicht vorhanden, bitte wählen Sie eine gütlige Nummer.");
+                decisiond = scan.nextInt();
+                d = drinks.get((decisiond - 1));
+            }
         }
-            Burger b = burgers.get((decision -1));
-            Drink d = drinks.get((decisiond - 1));
-
-            CustomMenu menu = new CustomMenu("Bestellung");
+            CustomMenu menu = new CustomMenu("Ihre Bestellung: ");
             BurgerDecorator burgerDecorator = new BurgerDecorator(menu, b);
             DrinkDecorator drinkDecorator = new DrinkDecorator(burgerDecorator, d);
 
         System.out.println(drinkDecorator.getName());
         System.out.println(drinkDecorator.getDescription());
-        System.out.println(drinkDecorator.getPrice());
-
-
+        System.out.println(drinkDecorator.getPrice() + " Franken");
     }
 }

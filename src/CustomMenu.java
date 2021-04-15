@@ -8,7 +8,7 @@ public class CustomMenu implements Gericht{
 
     @Override
     public double getPrice() {
-        return 5;
+        return 0;
     }
 
     @Override
