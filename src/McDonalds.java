@@ -59,13 +59,29 @@ public class McDonalds {
                 decisiond = scan.nextInt();
                 d = drinks.get((decisiond - 1));
             }
+            bestellübersichtMitGetränk(b,d);
+        }else {
+            bestellübersichtOhneGetränk(b);
         }
-            CustomMenu menu = new CustomMenu("Ihre Bestellung: ");
-            BurgerDecorator burgerDecorator = new BurgerDecorator(menu, b);
-            DrinkDecorator drinkDecorator = new DrinkDecorator(burgerDecorator, d);
+
+    }
+
+    public void bestellübersichtMitGetränk(Burger burger, Drink drink){
+        CustomMenu menu = new CustomMenu("Ihre Bestellung: ");
+        BurgerDecorator burgerDecorator = new BurgerDecorator(menu, burger);
+        DrinkDecorator drinkDecorator = new DrinkDecorator(burgerDecorator, drink);
 
         System.out.println(drinkDecorator.getName());
         System.out.println(drinkDecorator.getDescription());
         System.out.println(drinkDecorator.getPrice() + " Franken");
+    }
+
+    public void bestellübersichtOhneGetränk(Burger burger){
+        CustomMenu menu = new CustomMenu("Ihr Burger: ");
+        BurgerDecorator burgerDecorator = new BurgerDecorator(menu, burger);
+
+        System.out.println(burgerDecorator.getName());
+        System.out.println(burgerDecorator.getDescription());
+        System.out.println(burgerDecorator.getPrice() + " Franken");
     }
 }
