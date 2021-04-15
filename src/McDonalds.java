@@ -5,7 +5,9 @@ public class McDonalds {
 
     private ArrayList<Burger> burgers = new ArrayList<>();
     private ArrayList<Drink> drinks = new ArrayList<>();
-    Scanner scan;
+    int decision;
+    int decisiond;
+    Scanner scan = new Scanner(System.in);
 
     public void start(){
         System.out.println("Unsere Burger:");
@@ -20,24 +22,41 @@ public class McDonalds {
            System.out.println("\t" + "CHF " + b.getPrice() + "\n");
        }
 
-        System.out.println("Unsere Drinks: ");
-       Drink drink = new Drink("Cola", "small", 4.5);
-       Drink drink1 = new Drink("Sprite", "large", 5.5);
-
-       drinks.add(drink);
-       drinks.add(drink1);
-
-       for (Drink d : drinks){
-           System.out.println((drinks.indexOf(d) + 1) +"\t" + d.getName());
-           System.out.println("\t" + d.getSize());
-           System.out.println("\t" + "CHF " + d.getPrice() + "\n");
-       }
-
         System.out.println("Geben Sie die Zahl des Burgers an: ");
-       int decision = scan.nextInt();
-    }
+        decision = scan.nextInt();
 
-    public void decision(){
+        System.out.println("Mit Getränk? Y/N");
+        String yesNo = scan.next();
+
+        if(yesNo.equals("Y")) {
+
+            System.out.println("Unsere Drinks: ");
+            Drink drink = new Drink("Cola", "small", 4.5);
+            Drink drink1 = new Drink("Sprite", "large", 5.5);
+
+            drinks.add(drink);
+            drinks.add(drink1);
+
+            for (Drink d : drinks) {
+                System.out.println((drinks.indexOf(d) + 1) + "\t" + d.getName());
+                System.out.println("\t" + d.getSize());
+                System.out.println("\t" + "CHF " + d.getPrice() + "\n");
+            }
+
+            System.out.println("Geben Sie die Nummer des Getränks an: ");
+            decisiond = scan.nextInt();
+        }
+            Burger b = burgers.get((decision -1));
+            Drink d = drinks.get((decisiond - 1));
+
+            CustomMenu menu = new CustomMenu("Bestellung");
+            BurgerDecorator burgerDecorator = new BurgerDecorator(menu, b);
+            DrinkDecorator drinkDecorator = new DrinkDecorator(burgerDecorator, d);
+
+        System.out.println(drinkDecorator.getName());
+        System.out.println(drinkDecorator.getDescription());
+        System.out.println(drinkDecorator.getPrice());
+
 
     }
 }
