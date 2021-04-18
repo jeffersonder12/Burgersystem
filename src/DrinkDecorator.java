@@ -9,7 +9,7 @@ public class DrinkDecorator extends MenuDecorator {
 
     @Override
     public double getPrice() {
-        return gericht.getPrice() + drink.getPrice();
+        return drink.getPrice();
     }
 
     @Override
@@ -19,6 +19,6 @@ public class DrinkDecorator extends MenuDecorator {
 
     @Override
     public String getDescription() {
-        return gericht.getDescription() + " und " +drink.getSize() + " " + drink.getName();
+        return drink.getSize() + " " + drink.getName();
     }
 }
