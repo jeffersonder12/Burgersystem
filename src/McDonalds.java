@@ -13,23 +13,11 @@ public class McDonalds {
     Drink d;
     Scanner scan = new Scanner(System.in);
     String mehr="Y";
+    String yesNo;
     float drinkTotal=0;
     float burgerTotal=0;
     float gesamtTotal =0;
     boolean inputCorrect =false;
-
-    public void input(){
-        System.out.println("Geben Sie die Zahl des Burgers an: ");
-        decision = scan.nextInt();
-        b = burgers.get((decision - 1));
-        bestellung.add(b);
-    }
-
-    public void jaNein(){
-
-        System.out.println("Wollen Sie mehr Burger bestellen? [Y/N]:");
-        mehr = scan.next();
-    }
 
     public void start(){
 
@@ -49,11 +37,10 @@ public class McDonalds {
                 System.out.println((burgers.indexOf(b) + 1) + "\t" + b.getName());
                 System.out.println("\t" + "CHF " + b.getPrice() + "\n");
             }
-
             inputCorrect =false;
-            while(inputCorrect ==false){
+            while(!inputCorrect){
                 try {
-                    input();
+                    inputBurger();
                     inputCorrect =true;
                 } catch (IndexOutOfBoundsException e) {
                     System.out.println("Diese Nummer ist nicht vorhanden, bitte wählen Sie eine gütlige Nummer.");
@@ -64,18 +51,11 @@ public class McDonalds {
                 }
 
             }
-            try{
-                jaNein();
-            } catch(InputMismatchException i){
-                System.out.println("Versuche es nochmal");
-                scan.next();
-            }
-
+                jaNeinBurger();
         }
 
         mehr = "Y";
-        System.out.println("Mit Getränk? Y/N");
-        String yesNo = scan.next();
+        jaNeinDrink();
         if(yesNo.equalsIgnoreCase("Y")) {
             System.out.println("Unsere Drinks: ");
 
@@ -86,29 +66,32 @@ public class McDonalds {
                     System.out.println("\t" + "CHF " + d.getPrice() + "\n");
                 }
 
-                try {
-                    System.out.println("Geben Sie die Nummer des Getränks an: ");
-                    decisiond = scan.nextInt();
-                    d = drinks.get((decisiond - 1));
-                    bestellungd.add(d);
-                } catch (IndexOutOfBoundsException e) {
-                    System.out.println("Diese Nummer ist nicht vorhanden, bitte wählen Sie eine gütlige Nummer.");
-                    decisiond = scan.nextInt();
-                    d = drinks.get((decisiond - 1));
+                inputCorrect = false;
+                while(!inputCorrect){
+                    try {
+                        inputDrink();
+                        inputCorrect = true;
+                    } catch (IndexOutOfBoundsException e) {
+                        System.out.println("Diese Nummer ist nicht vorhanden, bitte wählen Sie eine gütlige Nummer.");
+
+                    } catch(InputMismatchException i){
+                        System.out.println("Diese Nummer ist nicht vorhanden, bitte wählen Sie eine gütlige Nummer.");
+                        scan.next();
+                    }
                 }
                 System.out.println("Wollen Sie mehr Getränke bestellen? [Y/N]:");
                 mehr = scan.next();
             }
             System.out.println("Bestellübersicht: \n");
-            for (Drink d : bestellungd) {
-                bestellübersichtMitGetränk(b, d);
-            }
+                for (Drink d : bestellungd) {
+                    bestellübersichtMitGetränk(b, d);
+                }
             CustomMenu menu = new CustomMenu("Ihre Bestellung: ");
             BurgerDecorator burgerDecorator = new BurgerDecorator(menu, burger);
 
-            for(Burger i:bestellung) {
-                bestellübersichtOhneGetränk(i);
-            }
+                for(Burger i:bestellung) {
+                    bestellübersichtOhneGetränk(i);
+                }
             gesamtTotal = drinkTotal + burgerTotal;
             System.out.println("\nGesamtpreis: \t \t \t" + gesamtTotal + " Franken.");
         }
@@ -125,7 +108,6 @@ public class McDonalds {
         CustomMenu menu = new CustomMenu("Ihre Bestellung: ");
         BurgerDecorator burgerDecorator = new BurgerDecorator(menu, burger);
         DrinkDecorator drinkDecorator = new DrinkDecorator(burgerDecorator, drink);
-
         drinkTotal += drinkDecorator.getPrice();
         System.out.println(drinkDecorator.getDescription() + "\t \t \t" + drinkDecorator.getPrice() + " Franken");
 
@@ -133,9 +115,41 @@ public class McDonalds {
     public void bestellübersichtOhneGetränk(Burger burger){
         CustomMenu menu = new CustomMenu("Ihre Bestellung: ");
         BurgerDecorator burgerDecorator = new BurgerDecorator(menu, burger);
-
         burgerTotal += burgerDecorator.getPrice();
         System.out.println(burgerDecorator.getDescription() + "\t " + burgerDecorator.getPrice() + " Franken");
+    }
 
+    public void inputBurger(){
+        System.out.println("Geben Sie die Zahl des Burgers an: ");
+        decision = scan.nextInt();
+        b = burgers.get((decision - 1));
+        bestellung.add(b);
+    }
+
+    public void inputDrink(){
+        System.out.println("Geben Sie die Nummer des Getränks an: ");
+        decisiond = scan.nextInt();
+        d = drinks.get((decisiond - 1));
+        bestellungd.add(d);
+    }
+
+    public void jaNeinBurger(){
+        System.out.println("Wollen Sie mehr Burger bestellen? [Y/N]:");
+        mehr = scan.next();
+
+        if(!(mehr.equalsIgnoreCase("Y")) && !(mehr.equalsIgnoreCase("N"))){
+            System.out.println("Bitte gib eine gültige Eingabe ein");
+            jaNeinBurger();
+        }
+    }
+
+    public void jaNeinDrink(){
+        System.out.println("Mit Getränk [Y/N]:");
+        yesNo = scan.next();
+
+        if(!(yesNo.equalsIgnoreCase("Y")) && !(yesNo.equalsIgnoreCase("N"))){
+            System.out.println("Bitte geben Sie eine gültige Eingabe ein");
+            jaNeinDrink();
+        }
     }
 }
